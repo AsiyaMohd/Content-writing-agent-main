@@ -144,7 +144,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import MessagesState, StateGraph, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_openai import AzureChatOpenAI
-
+from tools.search_tool import create_uuid
 # Dynamic Path Setup to set the default path 
 current_file_path = os.path.abspath(__file__)
 project_root = os.path.abspath(os.path.join(current_file_path, "../.."))
@@ -184,6 +184,8 @@ def search_agent(state: ContentState):
 def orchestrator(state: ContentState):
     state["links"]=extract_urls_from_tool_messages(state)
     print("--------------orchestator---------------------")
+   
+    create_uuid(state)
     print(state)
     return state
 
@@ -196,7 +198,9 @@ def blog_agent(state: ContentState):
         return {"messages": [llm.invoke([blog_agent_prompt] + state["input"])]}
     else:
         blog_agent_prompt = SystemMessage(content=blog_prompt)
+        print(state)
         return {"messages": [llm.invoke([blog_agent_prompt] + state["messages"] + state["input"])]}
+    
 
 
 
@@ -258,6 +262,7 @@ def tune_agent(state: ContentState):
     tune_agent_prompt = SystemMessage(content=tune_agent_prompt_content)
 
     print(f"=------------------tune agent running for {word_limit} words-----------------")
+    print(state)
     return {"messages": [llm.invoke([tune_agent_prompt] + state["messages"])]}
 
     

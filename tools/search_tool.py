@@ -1,5 +1,7 @@
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain.tools import tool
+import uuid
+import json
 import os
 from dotenv import load_dotenv
 import requests # New import
@@ -64,6 +66,37 @@ def extract_urls_from_tool_messages(state):
             urls.extend(found_urls)
     
     return urls
+
+
+ 
+def create_uuid(state):
+ try :
+    index=-1
+    messages = state["messages"].copy()
+    for idx,i in enumerate(state["messages"]):
+        if isinstance(i,ToolMessage):
+            index = idx
+            break
+    item = state["messages"][index]
+    obj = json.loads(item.content)
+ 
+    for i in obj :
+        i["uuid"]=str(uuid.uuid4())
+    modified_obj = json.dumps(obj)
+ 
+    new_Tool_Message = ToolMessage(
+        content=modified_obj,
+        name=item.name,
+        id = item.id,
+        tool_call_id=item.tool_call_id
+    )
+    messages[index]  = new_Tool_Message
+    state["messages"] = messages
+    print("uuid injection successfulllllllllllllll")
+ except Exception as e:
+     print(e)
+     print("uuid injection faileddddddddddddddddddddddddd")
+ 
 
 
 @tool

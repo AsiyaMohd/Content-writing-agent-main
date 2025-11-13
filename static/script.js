@@ -131,6 +131,7 @@ btn.addEventListener("click", async () => {
     formData.append("query", query || " ");
     formData.append("content_type", contentType);
     formData.append("wordCount", wordCount);
+ // send to backend
 
     try {
         const res = await fetch("/generate", {
