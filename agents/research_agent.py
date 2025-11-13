@@ -143,7 +143,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import MessagesState, StateGraph, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import AzureChatOpenAI
 
 # Dynamic Path Setup to set the default path 
 current_file_path = os.path.abspath(__file__)
@@ -160,8 +160,14 @@ class ContentState(MessagesState):
     links:list[str]
     pdf:bool
     formdata:str
+    wordCount: str
  
-llm=ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+llm  = AzureChatOpenAI(
+    azure_deployment=os.getenv("AZURE_DEPLOYMENT"),
+    api_version=os.getenv("AZURE_VERSION"),
+    azure_endpoint=os.getenv("AZURE_END_POINT"),
+    api_key=os.getenv("AZURE_API_KEY")
+)
 
 # llm = ChatOpenAI(model="gpt-4o-mini")
 
@@ -178,7 +184,7 @@ def search_agent(state: ContentState):
 def orchestrator(state: ContentState):
     state["links"]=extract_urls_from_tool_messages(state)
     print("--------------orchestator---------------------")
-    # print(state)
+    print(state)
     return state
 
 #  Define Agent 2: Content Agent 
@@ -211,24 +217,53 @@ def research_paper_agent(state: ContentState):
         research_paper_prompt = SystemMessage(content=research_prompt)
         return {"messages": [llm.invoke([research_paper_prompt] + state["messages"])]}
 
+
+# Content-writing-agent/agents/research_agent.py - MODIFIED tune_agent FUNCTION
+
 # Define Agent 3: Tuning Agent 
 def tune_agent(state: ContentState):
-    tune_agent_prompt=""
-    if state["content_type"]=="blog":
-        print("got the blog tone")
-        tune_agent_prompt = SystemMessage(content="content type"+state["content_type"]+blog_tone_prompt)
-    elif state["content_type"]=="thought_leadership":
-        print("got the thought tone")
-        tune_agent_prompt = SystemMessage(content="content type"+state["content_type"]+thougth_tone_prompt)
-    elif state["content_type"]=="research_paper":
-        print("got the research tone")
-        tune_agent_prompt = SystemMessage(content="content type"+state["content_type"]+research_tone_prompt)
-    print("=------------------tune agent-----------------")
+    # FIX: Correctly access 'wordCount' from the state dictionary (it comes as a string)
+    word_count_str = state.get("wordCount", "500")
+    try:
+        # Convert to int, defaulting if the conversion fails
+        word_limit = int(word_count_str) 
+    except (ValueError, TypeError):
+        word_limit = 500
+    
+    # Select the correct tone prompt base
+    if state["content_type"] == "blog":
+        tone_prompt_base = blog_tone_prompt
+    elif state["content_type"] == "thought_leadership":
+        tone_prompt_base = thougth_tone_prompt
+    elif state["content_type"] == "research_paper":
+        tone_prompt_base = research_tone_prompt
+    else:
+        # Fallback to a general tone prompt if content type is not matched
+        tone_prompt_base = tone_prompt 
+
+    # FIX: Use an f-string to forcefully inject the dynamic word_limit 
+    # and instruct the LLM to ignore any conflicting static limits inside the prompt variable.
+    tune_agent_prompt_content = f"""
+        Content Type: {state["content_type"]}
+        
+        {tone_prompt_base}
+        
+        # FINAL WORD COUNT MANDATE: 
+        Your ONLY priority for tuning is the length.
+        The final refined output must be approximately **{word_limit} words** long. 
+        **CRITICALLY: IGNORE** any other conflicting word count suggestions (e.g., "400–800 words") 
+        found in the tone prompt above and stick to **{word_limit} words**.
+        """
+        
+    tune_agent_prompt = SystemMessage(content=tune_agent_prompt_content)
+
+    print(f"=------------------tune agent running for {word_limit} words-----------------")
     return {"messages": [llm.invoke([tune_agent_prompt] + state["messages"])]}
+
     
 
 def orchestrator_condition(state: ContentState):
-    # print("we got the content type as ",state["content_type"])
+    print("we got the content type as ",state["content_type"])
     
     return state["content_type"]
 

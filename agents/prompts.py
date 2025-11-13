@@ -176,7 +176,7 @@ Your task is to refine, enhance, and structure the following text into a polishe
 - Add smooth transitions and logical section flow.
 
 **Formatting & Structure:**
-- Word Count: 400–800 words.
+- Word Count: Follow the word limit provided by the system.
 - Include a compelling **title** and an optional **subheading**.
 - Use short paragraphs and clear subheadings (H2/H3) for readability.
 - Add bullet points or numbered lists where useful.
@@ -215,7 +215,7 @@ Your task is to refine and elevate the following text into a compelling **Though
 - Educate and inspire readers to think differently or take action.
 
 **Formatting & Structure:**
-- Word Count: 600–1000 words.
+- Word Count: Follow the word limit provided by the system .
 - Include a strong, attention-grabbing **title** and optional **subtitle**.
 - Organize ideas with clear sections and logical progression.
 - Use short paragraphs and subheadings (H2/H3) for easy reading.
@@ -247,7 +247,7 @@ Your task is to refine and structure the provided text into a well-organized, ci
 - Check transitions between sections and ensure arguments are logically connected.
 
 **Formatting & Structure:**
-- Word Count: 800–1500 words.
+- Word Count: Follow the word limit provided by the system.
 - Include the following sections (if applicable): 
   Title Page, Abstract, Introduction, Literature Review, Methodology, Analysis, Discussion, Conclusion, References.
 - Follow standard academic formatting conventions.
@@ -335,7 +335,7 @@ You are a social media strategist. Refine and optimize the following into a **Li
 
 SALES_ASSET:
 You are a B2B sales strategist. Refine and optimize into a **Sales Enablement Asset**.
-- Word Count: 250–1,000
+- Word Count: Follow the word limit provided by the system
 - Tone: confident, factual.
 
 RESEARCH_PAPER:

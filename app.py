@@ -18,7 +18,10 @@ def generate_response():
         # metadata_str = request.form.get("metadata")
         # data = json.loads(metadata_str)
         user_input = request.form.get("query","")
-        user_input2 = request.form.get("query2","")
+        user_input2 = request.form.get("content_type","")
+        word_count = request.form.get("wordCount", "") # From slider
+        print(word_count)
+        print(type(word_count))
         file_data=""
         file=""
         if uploaded_pdf:
@@ -33,7 +36,8 @@ def generate_response():
                           "input": [user_input],
                           "links":[],
                           "pdf":True,
-                          "formdata":file_data
+                          "formdata":file_data,
+                          "wordCount": word_count 
                         }
         else:
 
@@ -43,7 +47,8 @@ def generate_response():
                           "input": [user_input],
                           "links":[],
                           "pdf":False,
-                          "formdata":file_data
+                          "formdata":file_data,
+                          "wordCount": word_count
                         }
         result = agent.invoke(initial_state)
        
@@ -83,7 +88,7 @@ def generate_response():
            
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 501
 
 
 if __name__ == '__main__':
