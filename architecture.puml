@@ -1,0 +1,15 @@
+@startuml
+title Project Architecture Diagram
+
+actor User as U
+
+rectangle "Search Agent\n(Uses Tavity tool for web search)" as SA
+rectangle "Content Management Agent\nProcesses and filters data" as CMA
+rectangle "Output/Tuning Agent\nTunes final content" as OTA
+
+U -> SA : Enter input text
+SA -> CMA : Provide search results
+CMA -> OTA : Filtered & processed content
+OTA -> U : Final output
+
+@enduml

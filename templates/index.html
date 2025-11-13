@@ -1,0 +1,204 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Generation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-left">
+            <div class="logo">Logo</div>
+            <nav class="breadcrumbs">
+                <a href="#">Dashboard</a>
+                <span class="breadcrumb-divider">/</span>
+                <strong>Content Generation</strong>
+            </nav>
+        </div>
+        <div class="navbar-right">
+            <button class="icon-button"><i class="fas fa-search"></i></button>
+            <div class="user-profile"></div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1>Content Generation</h1>
+        <p class="subtitle">Transform your ideas into engaging content with AI-powered generation tools</p>
+
+        <div class="card form-card">
+
+            <div class="input-methods-card">
+                <div class="input-tabs">
+                    <button class="tab-button" data-tab="upload">
+                        <i class="fas fa-upload"></i> Upload File
+                    </button>
+                    <button class="tab-button active" data-tab="paste">
+                        <i class="fas fa-paste"></i> Paste Text/Links
+                    </button>
+                </div>
+
+                <div class="tab-content" id="upload-tab" style="display: none;">
+                    <div class="drop-zone">
+                        <div class="drop-zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <input type="file" id="pdffile" accept="application/pdf"/>
+                        <p><strong>Drag and drop your file here, or click to browse</strong></p>
+                        <p class="file-types">Supports PDF, DOC, TXT files up to 10MB</p>
+                        <div class="hotkey"><span>ctrl</span> + <span></span></div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="paste-tab">
+                    <textarea id="query" placeholder="Enter your topic or question here..."></textarea>
+                </div>
+                
+            </div>
+
+            <div class="content-type-section">
+                <label for="content_type">Content Type</label>
+                <div class="dropdown">
+                    <select name="content_type" id="content_type">
+                        <option value="" disabled selected>Select content type...</option>
+                        <option value="blog">Blog</option>
+                        <option value="thought_leadership">Thought Leadership</option>
+                        <option value="research_paper">Research Paper</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="generateBtn" class="generate-button">
+                <i class="fas fa-magic"></i> Generate Content
+            </button>
+        </div>
+
+        <div class="card output-card">
+            
+            <div id="loading" style="display: none;">
+                <div class="spinner"></div>
+                Generating content, please wait...
+            </div>
+            
+            <div id="links-box" style="display: none;">
+                <strong><i class="fas fa-link"></i> Using the following sources:</strong>
+                <ul id="links-list">
+                    </ul>
+            </div>
+            
+            <textarea 
+                id="response" 
+                placeholder="Generated content will appear here..." 
+                readonly 
+                style="display: none;"
+            ></textarea>
+            
+            <button id="downloadBtn" style="display:none;">
+                <i class="fas fa-download"></i> Download as TXT
+            </button>
+        </div>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Generation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-left">
+            <nav class="breadcrumbs">
+                <strong>Content Generation</strong>
+            </nav>
+        </div>
+        <div class="navbar-right">
+            <div class="user-profile"></div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h1>Content Generation</h1>
+        <p class="subtitle">Transform your ideas into engaging content with AI-powered generation tools</p>
+
+        <div class="card form-card">
+
+            <div class="input-section">
+                
+                <div class="input-group">
+                    <label for="query">Enter Text or Instructions</label>
+                    <textarea id="query" placeholder="Enter your topic or question here..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="pdffile">Upload a File</label>
+                    <div class="drop-zone">
+                        <div class="drop-zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <input type="file" id="pdffile" multiple accept=".pdf,.txt,.docx"/>
+                        <p><strong>Drag and drop your file here, or click to browse</strong></p>
+                        <p>
+                            <span id="file-name-display" style="font-weight: 600; color: #4A90E2;"></span>
+                        </p>
+                        <p class="file-types">Supports PDF, DOC, TXT files up to 10MB</p>
+                    </div>
+                </div>
+                
+            <div class="content-type-section input-group">
+    <label for="content_type">Content Type</label>
+    <div class="dropdown">
+        <select name="content_type" id="content_type">
+            
+            <option value="blog" selected>Blog</option>
+            
+            <option value="thought_leadership">Thought Leadership</option>
+            <option value="research_paper">Research Paper</option>
+        </select>
+    </div>
+</div>
+
+            <button id="generateBtn" class="generate-button">
+                <i class="fas fa-magic"></i> Generate Content
+            </button>
+        </div>
+
+        <div class="card output-card">
+            
+            <div id="loading" style="display: none;">
+            <div class="spinner"></div>
+                <span id="loading-message" class="loading-text">Generating content, please wait...</span>
+            </div>
+            
+            
+            <div class="response-container"> <textarea 
+                    id="response" 
+                    placeholder="Generated content will appear here..." 
+                    readonly 
+                    style="display: none;"
+                ></textarea>
+                
+                <button id="downloadBtn" class="small-download-btn" style="display:none;">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+            <div id="links-box" style="display: none;">
+                <strong><i class="fas fa-link"></i> Using the following sources:</strong>
+                <ul id="links-list">
+                    </ul>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

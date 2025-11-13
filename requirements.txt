@@ -1,0 +1,12 @@
+langchain-community
+openai
+langchain-core
+langgraph
+langchain
+langchain-openai
+pydantic
+IPython
+dotenv
+requests
+beautifulsoup4
+python-docxs

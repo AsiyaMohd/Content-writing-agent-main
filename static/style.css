@@ -1,0 +1,899 @@
+/* --- Root Variables ---
+:root {
+    --color-primary: #4A90E2; 
+    --color-primary-dark: #357ABD;
+    --color-text-primary: #2c3e50;
+    --color-text-secondary: #5a6b7b;
+    --color-text-light: #8a9aaa;
+    --color-bg-light: #f7f9fc;
+    --color-border: #e0e6ed;
+    --color-white: #ffffff;
+    --color-shadow: rgba(44, 62, 80, 0.1);
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+}
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+    margin-right: 24px;
+}
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.breadcrumbs a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: var(--color-primary);
+}
+
+.breadcrumbs strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+.breadcrumb-divider {
+    margin: 0 8px;
+    color: var(--color-text-light);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    padding: 8px;
+    border-radius: var(--border-radius-md);
+}
+
+.icon-button:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-primary);
+}
+
+.user-profile {
+    width: 32px;
+    height: 32px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    margin-left: 16px;
+    cursor: pointer;
+}
+
+
+.main-content {
+    max-width: 800px;
+    margin: 32px auto;
+    padding: 0 24px;
+}
+
+h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 24px;
+}
+
+
+.card {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px var(--color-shadow);
+    margin-bottom: 24px;
+}
+
+.form-card {
+    padding: 24px;
+}
+
+.output-card {
+    padding: 24px;
+}
+
+
+.input-methods-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 24px;
+}
+
+.input-tabs {
+    display: flex;
+    background-color: #fcfdff;
+    border-bottom: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.tab-button i {
+    margin-right: 8px;
+}
+
+.tab-button:hover {
+    color: var(--color-text-primary);
+    background-color: #f7f9fc;
+}
+
+.tab-button.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.tab-content {
+    padding: 20px;
+}
+
+
+.drop-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--border-radius-md);
+    background-color: #fcfdff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.drop-zone:hover {
+    border-color: var(--color-primary);
+    background-color: #f9fbff;
+}
+
+.drop-zone-icon {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+}
+
+.drop-zone p {
+    margin: 4px 0;
+    color: var(--color-text-secondary);
+}
+
+.drop-zone .file-types {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+}
+
+.hotkey {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+}
+
+.hotkey span {
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    padding: 2px 6px;
+    margin: 0 4px;
+}
+
+
+#query,
+.link-input {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    box-sizing: border-box; 
+}
+
+#query:focus,
+.link-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.link-input {
+    min-height: auto;
+    margin-bottom: 12px;
+}
+
+.add-link-button {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+.content-type-section {
+    margin-bottom: 24px;
+}
+
+.content-type-section label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+}
+
+.dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    appearance: none;
+    cursor: pointer;
+}
+
+.dropdown select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+
+.dropdown::after {
+    content: "▼";
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+
+.generate-button {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.generate-button i {
+    margin-right: 8px;
+}
+
+.generate-button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+
+#response {
+    width: 100%;
+    min-height: 250px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    background-color: #fcfdff;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    resize: vertical;
+    box-sizing: border-box; 
+    font-family: "Menlo", "Consolas", monospace;
+    margin-top: 0; 
+}
+
+#response[readonly] {
+    cursor: default;
+}
+
+#downloadBtn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-block; 
+}
+
+#downloadBtn:hover {
+    background-color: #f9fbff;
+}
+
+
+#loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(74, 144, 226, 0.2);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    margin-right: 12px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+#links-list {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 8px;       
+}
+
+
+.link-pill {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg-light);
+    border: 1px solid var(--color-border);
+    border-radius: 16px; 
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    margin-bottom: 0; 
+    list-style-type: none; 
+}
+
+.link-favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    border-radius: 2px; 
+    object-fit: contain;
+}
+
+
+.link-pill a {
+    color: var(--color-text-secondary); 
+    font-weight: 500;
+    text-decoration: none; 
+}
+
+.link-pill a:hover {
+    color: var(--color-primary); 
+}
+
+
+@media (max-width: 600px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+    .breadcrumbs {
+        display: none;
+    }
+    .main-content {
+        margin: 16px auto;
+        padding: 0 16px;
+    }
+    .card {
+        padding: 16px;
+    }
+    .tab-button {
+        font-size: 0.85rem;
+        padding: 12px 8px;
+    }
+} */
+
+
+
+/* General Styling Improvements */
+:root {
+    --primary-color: #4A90E2; /* A nice blue for accents */
+    --secondary-color: #E2E8F0; /* Light gray for backgrounds */
+    --text-color: #333;
+    --light-text-color: #666;
+    --border-color: #D1D5DB;
+    --card-bg: #FFFFFF;
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --border-radius: 8px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    margin: 0;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+*{
+    box-sizing: border-box; 
+}
+.response-container {
+    position: relative;
+    
+}
+.main-content {
+    max-width: 900px;
+    margin: var(--spacing-lg) auto;
+    padding: 0 var(--spacing-md);
+}
+
+h1 {
+    font-size: 2.5em;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: var(--light-text-color);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Card Styling */
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl); /* Space between cards */
+}
+
+/* Input Section - Layout & Look */
+.input-section {
+    display: flex;
+    flex-direction: column; /* Stacks the input groups vertically */
+    gap: var(--spacing-lg); /* Space between the text area and drop zone */
+    margin-bottom: var(--spacing-lg); /* Space before content type */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm); /* Space between label and input */
+}
+
+.input-group label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+textarea#query {
+    width: 100%;
+    min-height: 150px;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    resize: vertical; /* Allow vertical resizing */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+textarea#query:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+/* Drop Zone */
+.drop-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    text-align: center;
+    cursor: pointer;
+    background-color: #F8FAFC; /* Lighter background for drop zone */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    position: relative; /* For file input overlay */
+}
+
+.drop-zone:hover {
+    background-color: #F1F5F9;
+    border-color: var(--primary-color);
+}
+
+.drop-zone input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.drop-zone-icon {
+    font-size: 3em;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.drop-zone p {
+    margin: 0;
+    color: var(--light-text-color);
+}
+
+.drop-zone p strong {
+    color: var(--text-color);
+}
+
+.file-types {
+    font-size: 0.85em;
+    color: #94A3B8;
+    margin-top: var(--spacing-xs);
+}
+
+/* Content Type Dropdown */
+.dropdown select {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--card-bg);
+    font-size: 1em;
+    appearance: none; /* Remove default browser styling */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7L146.2%20204%2018.7%2075.1a17.6%2017.6%200%200%200-25.7%20-.1%2017.6%2017.6%200%200%200%20-.1%2025.7l130.4%20130.4c6.7%206.7%2017.7%206.7%2024.5%200l130.4-130.4a17.6%2017.6%200%200%200-12.9-30.8z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-sm) center;
+    background-size: 12px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+.dropdown select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+
+/* Generate Button */
+.generate-button {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    box-shadow: var(--shadow-light);
+}
+.generate-button:hover {
+    background-color: #3A7DCB; /* Slightly darker primary */
+    box-shadow: var(--shadow-medium);
+}
+.generate-button:active {
+    background-color: #2D6BA0;
+    box-shadow: none;
+}
+
+/* Output Card */
+.output-card {
+    min-height: 200px; /* Give it some initial height */
+    position: relative; /* For loader and download button positioning */
+}
+
+/* Loading Spinner */
+#loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    color: var(--primary-color);
+    z-index: 10;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: var(--spacing-sm);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Links Box */
+#links-box {
+    background-color: #EBF8FF; /* Light blue background */
+    border: 1px solid #BEE3F8;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+#links-box strong {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--primary-color);
+}
+#links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+.link-pill {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 4px var(--spacing-sm);
+    font-size: 0.85em;
+    gap: 6px;
+}
+.link-favicon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+.link-pill a {
+    color: var(--primary-color);
+    text-decoration: none;
+    max-width: 150px; /* Prevent long domains from breaking layout */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.link-pill a:hover {
+    text-decoration: underline;
+}
+
+.response-container {
+    position: relative;
+    /* Removed the top margin as it's cleaner to handle spacing from the link */
+}
+
+/* textarea#response {
+    width: 100%;
+    min-height: 250px; 
+    padding: var(--spacing-md);
+    padding-right: 50px; 
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    background-color: #F8FAFC;
+    color: var(--text-color);
+    resize: vertical;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+} */
+
+/* General variable for cleaner code */
+:root {
+    --output-bg: #F9FAFB; 
+    --output-text-color: #1F2937;
+    --output-border-color: #D1DDEE;
+}
+
+/* Ensure the output container itself looks attractive */
+.card.output-card {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); /* Stronger shadow for output */
+    border-radius: 12px; /* Slightly more rounded corners */
+}
+
+textarea#response {
+    /* Existing essential settings */
+    width: 100%;
+    min-height: 250px; 
+    resize: vertical;
+    box-sizing: border-box; /* Crucial for fit */
+
+    /* Aesthetic Enhancements */
+    font-family: 'Georgia', serif; /* Or another easily readable font you like */
+    font-size: 1.05em;
+    line-height: 1.65; /* Generous line spacing */
+    color: var(--output-text-color);
+    background-color: var(--output-bg);
+    
+    /* Box Styling */
+    padding: 20px 60px 20px 20px; /* Generous padding, keeping space for download button */
+    border: 1px solid var(--output-border-color); 
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04); /* Subtle inner shadow */
+    transition: all 0.3s ease; /* Smooth transitions */
+}
+
+/* Small Download Button */
+.small-download-btn {
+    position: absolute;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
+    width: 36px; /* Small square button */
+    height: 36px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    z-index: 5; /* Ensure it's above the textarea */
+}
+.small-download-btn:hover {
+    background-color: #3A7DCB;
+    box-shadow: var(--shadow-light);
+}
+.small-download-btn:active {
+    background-color: #2D6BA0;
+    box-shadow: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 0 var(--spacing-sm);
+    }
+    h1 {
+        font-size: 2em;
+    }
+    .generate-button {
+        font-size: 1em;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+/* Styling for disabled elements for clear user feedback */
+#content_type:disabled, 
+#generateBtn:disabled,
+#query:disabled,
+.drop-zone input[type="file"]:disabled + p + p { 
+    /* The second selector targets the drop-zone text and makes it look disabled */
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#generateBtn:disabled {
+    background-color: #6c757d; /* A grey color */
+    border-color: #6c757d;
+}
+
+#query:disabled {
+    background-color: #f8f9fa; /* Light grey background for the text area */
+}
+#pdffile:disabled{
+    background-color: #6c757d; /* A grey color */
+    border-color: #6c757d;
+}
+/* 1. Mute the text inside the drop zone (Existing, but kept for clarity) */
+.drop-zone input[type="file"]:disabled + p + p,
+.drop-zone input[type="file"]:disabled + p {
+    color: #6c757d; /* Mute the text color */
+    opacity: 1; /* Keep text clear while container is muted */
+}
+
+/* 2. Style the entire drop zone container when the input inside is disabled */
+/* Use :has() if supported, or target the container's appearance */
+
+.drop-zone:has(input[type="file"]:disabled) { /* Modern approach, if supported */
+    cursor: not-allowed;
+    background-color: #f8f9fa; /* Match the disabled query box */
+    border-color: #D1D5DB; /* Mute the border */
+    opacity: 0.7; /* Mute the overall container */
+    pointer-events: none; /* Crucial: ensures clicks pass through */
+}
+
+/* Fallback for browsers without :has(), focusing on the invisible input */
+.drop-zone input[type="file"]:disabled {
+    cursor: not-allowed;
+    pointer-events: none; /* Prevent file picker opening */
+}
+
+/* Mute the drop zone icon when disabled */
+.drop-zone:has(input[type="file"]:disabled) .drop-zone-icon {
+    color: #aeb4b9; /* Light grey icon color */
+}
