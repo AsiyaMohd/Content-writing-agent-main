@@ -10,3 +10,8 @@ dotenv
 requests
 beautifulsoup4
 python-docx
+flask
+pdfplumber
+gunicorn
+langchain-tavily
+pdfplumber
