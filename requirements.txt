@@ -9,4 +9,4 @@ IPython
 dotenv
 requests
 beautifulsoup4
-python-docxs
+python-docx
