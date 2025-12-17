@@ -1,30 +1,25 @@
-# Use official lightweight Python image
-FROM python:3.10-slim
+# Use official Python runtime base image
+FROM python:3.11-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# Set work directory
+# Set working directory
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y gcc \
-    libpq-dev \
- && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements
-COPY requirements.txt /app/
+# Copy dependency specification
+COPY requirements.txt ./
 
-# Install Python dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Install python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application source
-COPY . /app/
+# Copy application source code
+COPY . .
 
-# Expose port 5000 for Flask
+# Expose port 5000 for Flask app
 EXPOSE 5000
 
-# Use gunicorn to serve the app
-CMD ["gunicorn", "--bind",  "0.0.0.0:5000", "app:app"]
+# Use gunicorn for production running
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
