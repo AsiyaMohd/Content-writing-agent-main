@@ -6,8 +6,8 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - FLASK_ENV=production
+      # Set environment variables here if any
       - TAVILY_API_KEY=${TAVILY_API_KEY}
     volumes:
       - .:/app
-    command: gunicorn --bind 0.0.0.0:5000 app:app
+    command: gunicorn -b 0.0.0.0:5000 app:app
