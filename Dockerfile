@@ -1,27 +1,32 @@
-# Use official Python runtime base image
+# Base image: official Python 3.11 slim image (modern version with security updates)
 FROM python:3.11-slim
 
-# Set work directory inside container
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# Set work directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
+# Install system dependencies (for pdfplumber and other libs requiring build tools)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpoppler-cpp-dev \
+    pkg-config \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements to cache dependencies layer
-COPY requirements.txt .
+# Install pipenv and dependencies
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# Install python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy project code
+COPY . /app/
 
-# Copy app source code
-COPY . .
-
-# Expose port used by Flask
+# Expose port (Flask default 5000)
 EXPOSE 5000
 
-# Set environment variables
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-
-# Run the application
-CMD ["flask", "run"]
+# Use gunicorn for production server
+# CMD ["python", "app.py"] # Development run
+CMD ["gunicorn", "app:app", "-b", "0.0.0.0:5000", "--workers", "1"]
