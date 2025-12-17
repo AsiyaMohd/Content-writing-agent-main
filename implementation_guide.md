@@ -1,46 +1,81 @@
-# Implementation Guide for Content Writing Agent
+# Implementation Guide for Content-writing-agent-main
 
 ## Prerequisites
-- Docker and Docker Compose installed on your machine
-- GitHub account with repository access
-- Docker Hub account (or another container registry) for pushing Docker images
-
-## Required GitHub Secrets
-- `DOCKERHUB_USERNAME`: Your Docker Hub username
-- `DOCKERHUB_TOKEN`: Your Docker Hub access token or password
+- Docker
+- Docker Compose
+- GitHub account (for CI/CD)
+- Docker Hub account (for Docker image push)
+- Python 3.10 (for local development without Docker)
 
 ## Environment Variables
-- `FLASK_ENV`: Set to `development` for development environment (default in docker-compose)
+Please set the following environment variables in your deployment environment:
+- `OPENAI_API_KEY`: Your OpenAI API key for access to language models
+
+Additional environment variables may be required by LangChain or other components; refer to their documentation.
 
 ## Local Development Setup
-1. Clone this repository
-```bash
-git clone https://github.com/AsiyaMohd/Content-writing-agent-main.git
-cd Content-writing-agent-main
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/AsiyaMohd/Content-writing-agent-main.git
+   cd Content-writing-agent-main
+   ```
+2. (Optional) Create and activate a Python virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate   # Windows
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Set environment variables locally, e.g., create a `.env` file with your keys.
+5. Run the Flask app:
+   ```bash
+   python app.py
+   ```
+6. Access the app at: http://localhost:5000
 
-2. Build and run the application with Docker Compose
-```bash
-docker-compose up --build
-```
+## Docker Setup and Run
+1. Build the Docker image:
+   ```bash
+   docker build -t content-writing-agent .
+   ```
+2. Run the Docker container:
+   ```bash
+   docker run -p 5000:5000 --env OPENAI_API_KEY=$OPENAI_API_KEY content-writing-agent
+   ```
+3. Open browser at http://localhost:5000
 
-3. Access the application at `http://localhost:5000`
+## Using Docker Compose
+1. Build and start the service:
+   ```bash
+   docker-compose up --build
+   ```
+2. Compose file maps port 5000 and mounts code for local changes
 
-## Deployment Process
-1. Push code and Docker image to container registry
-2. Use CI/CD workflow to automate testing and deployments
+## CI/CD
+- The repository includes a GitHub Actions workflow that runs on push or pull request to main branch.
+- Workflow installs dependencies, builds Docker image, and pushes it to Docker Hub.
+- Use GitHub Secrets:
+  - `DOCKERHUB_USERNAME`: Your Docker Hub username
+  - `DOCKERHUB_TOKEN`: Your Docker Hub access token/password
 
-## Database Setup
-- No external database is required for this application.
+## Deployment
+- The Docker image pushed to Docker Hub can be deployed to any container platform.
+- Customize deployment scripts or workflows as needed.
 
 ## Troubleshooting
-- Ensure Docker daemon is running
-- Check logs for errors using `docker-compose logs`
-- Verify GitHub secrets are correctly set
+- Ensure all environment variables are set
+- Check Docker and Docker Compose versions
+- View logs for errors: `docker logs <container_id>`
+- For Flask errors, check console output
 
-## Additional Notes
-- The Flask app is served on port 5000 by default.
-- Modify the `docker-compose.yml` if you need to add volumes or adjust environment variables.
+## Further Resources
+- [Flask Documentation](https://flask.palletsprojects.com/)
+- [Docker Documentation](https://docs.docker.com/)
+- [LangChain Documentation](https://docs.langchain.com/)
 
-## Documentation
-- Refer to the README.md in the repository for general information.
+---
+
+This guide covers local development, Docker usage, and CI/CD setup for the Content-writing-agent-main app.
