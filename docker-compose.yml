@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
   app:
@@ -6,9 +6,8 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - TAVILY_API_KEY
-      - OPENAI_API_KEY
-      - GOOGLE_API_KEY
+      - FLASK_ENV=production
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
     volumes:
       - .:/app
-    restart: unless-stopped
+    command: gunicorn --bind 0.0.0.0:5000 app:app
