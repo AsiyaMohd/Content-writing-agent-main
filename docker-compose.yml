@@ -1,12 +1,13 @@
 version: '3.8'
 
 services:
-  content-writing-agent:
+  app:
     build: .
     ports:
       - "5000:5000"
     environment:
       - FLASK_ENV=production
+      # Add environment variables as needed for AI API keys here
     volumes:
       - .:/app
-    restart: unless-stopped
+    command: gunicorn --bind 0.0.0.0:5000 app:app
