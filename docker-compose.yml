@@ -1,13 +1,12 @@
-version: '3.8'
-
+version: "3.9"
 services:
   app:
     build: .
     ports:
       - "5000:5000"
     environment:
-      # Set environment variables here if any
-      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - FLASK_ENV=development
     volumes:
       - .:/app
-    command: gunicorn -b 0.0.0.0:5000 app:app
+    command: python app.py
+    restart: unless-stopped
