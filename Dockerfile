@@ -1,22 +1,29 @@
-# Use official Python runtime image as a parent image
+# Use official lightweight Python image
 FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# Set work directory
+# Set working directory
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy app source code
-COPY . /app/
+# Copy only requirements to leverage Docker cache
+COPY requirements.txt ./
 
-# Expose port 5000 for Flask
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application source code
+COPY . /app
+
+# Expose Flask default port
 EXPOSE 5000
 
-# Run the application with gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+# Set environment variables for Flask app
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+
+# Run with gunicorn production server for better performance
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
