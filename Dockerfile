@@ -1,23 +1,27 @@
-# Use official Python runtime as a parent image
-FROM python:3.10-slim
+# Use official Python runtime base image
+FROM python:3.11-slim
 
-# Set work directory
+# Set work directory inside container
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
+
+# Copy only requirements to cache dependencies layer
+COPY requirements.txt .
 
 # Install python dependencies
-COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application source code
+# Copy app source code
 COPY . .
 
-# Expose port 5000
+# Expose port used by Flask
 EXPOSE 5000
 
-# Command to run the application
-CMD ["python", "app.py"]
+# Set environment variables
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+
+# Run the application
+CMD ["flask", "run"]
