@@ -1,12 +1,13 @@
-version: "3.9"
+version: '3.8'
 services:
-  app:
+  content-writing-agent:
     build: .
     ports:
       - "5000:5000"
     environment:
-      - FLASK_ENV=development
+      - FLASK_ENV=production
+      - LANGCHAIN_HANDLER=generic
+      # Add other env vars as needed, e.g. API keys
     volumes:
       - .:/app
-    command: python app.py
-    restart: unless-stopped
+    command: gunicorn -b 0.0.0.0:5000 app:app
