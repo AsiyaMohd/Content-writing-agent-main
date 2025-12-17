@@ -1,4 +1,4 @@
-# Use official Python runtime as a parent image
+# Use official lightweight Python image
 FROM python:3.10-slim
 
 # Set environment variables
@@ -8,16 +8,23 @@ ENV PYTHONUNBUFFERED 1
 # Set work directory
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt /app/
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+# Install system dependencies
+RUN apt-get update && apt-get install -y gcc \
+    libpq-dev \
+ && rm -rf /var/lib/apt/lists/*
 
-# Copy project
+# Copy requirements
+COPY requirements.txt /app/
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Copy application source
 COPY . /app/
 
-# Expose the port the app runs on
+# Expose port 5000 for Flask
 EXPOSE 5000
 
-# Use Gunicorn as the server
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+# Use gunicorn to serve the app
+CMD ["gunicorn", "--bind",  "0.0.0.0:5000", "app:app"]
