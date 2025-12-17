@@ -1,81 +1,69 @@
-# Implementation Guide for Content-writing-agent-main
+# Implementation Guide - Content Writing Agent
 
 ## Prerequisites
-- Docker
-- Docker Compose
-- GitHub account (for CI/CD)
-- Docker Hub account (for Docker image push)
-- Python 3.10 (for local development without Docker)
+- Docker installed locally: https://docs.docker.com/get-docker/
+- Docker Compose installed: https://docs.docker.com/compose/install/
+- GitHub account with repository access
+- Docker Hub account (for pushing built images)
+
+## Required GitHub Secrets
+- `DOCKERHUB_USERNAME`: Your Docker Hub username
+- `DOCKERHUB_TOKEN`: Docker Hub access token or password
 
 ## Environment Variables
-Please set the following environment variables in your deployment environment:
-- `OPENAI_API_KEY`: Your OpenAI API key for access to language models
-
-Additional environment variables may be required by LangChain or other components; refer to their documentation.
+- `.env` file is not provided but the app reads from environment variables such as `FLASK_ENV`
 
 ## Local Development Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/AsiyaMohd/Content-writing-agent-main.git
-   cd Content-writing-agent-main
-   ```
-2. (Optional) Create and activate a Python virtual environment:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate   # Windows
-   ```
+1. Clone the repository
+2. Create and activate a Python 3.10 virtual environment
 3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-4. Set environment variables locally, e.g., create a `.env` file with your keys.
-5. Run the Flask app:
+4. Run the app locally:
    ```bash
    python app.py
    ```
-6. Access the app at: http://localhost:5000
+   The app will be accessible at http://127.0.0.1:5000/
 
-## Docker Setup and Run
+## Building and Running with Docker
 1. Build the Docker image:
    ```bash
    docker build -t content-writing-agent .
    ```
-2. Run the Docker container:
+2. Run the container:
    ```bash
-   docker run -p 5000:5000 --env OPENAI_API_KEY=$OPENAI_API_KEY content-writing-agent
+   docker run -p 5000:5000 content-writing-agent
    ```
-3. Open browser at http://localhost:5000
-
-## Using Docker Compose
-1. Build and start the service:
+3. Or use Docker Compose:
    ```bash
    docker-compose up --build
    ```
-2. Compose file maps port 5000 and mounts code for local changes
 
-## CI/CD
-- The repository includes a GitHub Actions workflow that runs on push or pull request to main branch.
-- Workflow installs dependencies, builds Docker image, and pushes it to Docker Hub.
-- Use GitHub Secrets:
-  - `DOCKERHUB_USERNAME`: Your Docker Hub username
-  - `DOCKERHUB_TOKEN`: Your Docker Hub access token/password
+## Deployment Process
+1. Push your code to the `main` branch on GitHub
+2. The GitHub Actions CI/CD pipeline will build, test, and push the Docker image to Docker Hub
+3. Deploy the Docker image to your hosting provider (AWS, DigitalOcean, etc.)
 
-## Deployment
-- The Docker image pushed to Docker Hub can be deployed to any container platform.
-- Customize deployment scripts or workflows as needed.
+## Database Setup
+- No database used in the application currently
 
 ## Troubleshooting
-- Ensure all environment variables are set
-- Check Docker and Docker Compose versions
-- View logs for errors: `docker logs <container_id>`
-- For Flask errors, check console output
+- Make sure all dependencies are installed correctly
+- Verify Docker daemon is running
+- Check port 5000 is not used by another process
 
-## Further Resources
-- [Flask Documentation](https://flask.palletsprojects.com/)
-- [Docker Documentation](https://docs.docker.com/)
-- [LangChain Documentation](https://docs.langchain.com/)
+## Further Improvements
+- Add tests and enable running tests on CI
+- Add deployment steps in GitHub Actions
+
+## Documentation
+- Source code uses Flask backend with LangChain AI agents
+- The main app file is `app.py`
+- Frontend templates are in the `templates/` directory
+- Static assets like CSS and JS are in the `static/` directory
+
 
 ---
 
-This guide covers local development, Docker usage, and CI/CD setup for the Content-writing-agent-main app.
+For any further help, refer to README.md or open an issue on GitHub.
