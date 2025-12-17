@@ -1,74 +1,46 @@
 # Implementation Guide for Content Writing Agent
 
 ## Prerequisites
-- Docker installed on your system
-- Python 3.11 (for local dev)
-- GitHub account to use CI/CD workflows
-- API keys for OpenAI or Langchain services if applicable (user must provide these as environment variables)
+- Docker and Docker Compose installed on your machine
+- GitHub account with repository access
+- Docker Hub account (or another container registry) for pushing Docker images
+
+## Required GitHub Secrets
+- `DOCKERHUB_USERNAME`: Your Docker Hub username
+- `DOCKERHUB_TOKEN`: Your Docker Hub access token or password
 
 ## Environment Variables
-This app may require the following environment variables to function properly (not explicitly defined in repo, verify with your deployed environment):
-- OPENAI_API_KEY
-- TAVILY_API_KEY (optional if search features used)
+- `FLASK_ENV`: Set to `development` for development environment (default in docker-compose)
 
-## Local Setup
-1. Clone the repository:
+## Local Development Setup
+1. Clone this repository
 ```bash
 git clone https://github.com/AsiyaMohd/Content-writing-agent-main.git
 cd Content-writing-agent-main
 ```
 
-2. Create a virtual environment and install dependencies:
+2. Build and run the application with Docker Compose
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+docker-compose up --build
 ```
 
-3. Run the Flask app locally:
-```bash
-flask run
-```
+3. Access the application at `http://localhost:5000`
 
-Open http://localhost:5000 in your browser to access the app.
+## Deployment Process
+1. Push code and Docker image to container registry
+2. Use CI/CD workflow to automate testing and deployments
 
-## Using Docker
-1. Build the Docker image:
-```bash
-docker build -t content-writing-agent .
-```
-
-2. Run the container:
-```bash
-docker run -p 5000:5000 content-writing-agent
-```
-
-The app will be accessible at http://localhost:5000
-
-## CI/CD Workflow
-The GitHub Actions workflow (.github/workflows/cicd.yml) is configured to:
-- Run on pushes and pull requests to main branch
-- Setup Python 3.11
-- Install dependencies
-- Lint the code
-- Build the Docker image
-
-You can add deployment steps or tests as needed.
-
-## Deployment
-- The app Docker image can be deployed to any container platform (AWS ECS, Azure, GCP, Docker Hub, etc.)
-- Make sure to supply required API keys and environment variables securely
+## Database Setup
+- No external database is required for this application.
 
 ## Troubleshooting
-- If the app fails to start, ensure all dependencies are installed
-- Check that environment variables are correctly set
-- Check Docker container logs for errors
+- Ensure Docker daemon is running
+- Check logs for errors using `docker-compose logs`
+- Verify GitHub secrets are correctly set
 
 ## Additional Notes
-- The app listens on port 5000
-- The app runs in debug mode by default; consider switching to production server (Gunicorn) for production deployments
+- The Flask app is served on port 5000 by default.
+- Modify the `docker-compose.yml` if you need to add volumes or adjust environment variables.
 
-## References
-- Flask documentation: https://flask.palletsprojects.com/
-- Docker documentation: https://docs.docker.com/
-- GitHub Actions: https://docs.github.com/en/actions
+## Documentation
+- Refer to the README.md in the repository for general information.
