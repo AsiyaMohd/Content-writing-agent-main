@@ -1,69 +1,66 @@
-# Implementation Guide - Content Writing Agent
+# Implementation Guide for Content Writing Agent
 
 ## Prerequisites
-- Docker installed locally: https://docs.docker.com/get-docker/
-- Docker Compose installed: https://docs.docker.com/compose/install/
-- GitHub account with repository access
-- Docker Hub account (for pushing built images)
-
-## Required GitHub Secrets
-- `DOCKERHUB_USERNAME`: Your Docker Hub username
-- `DOCKERHUB_TOKEN`: Docker Hub access token or password
+- Docker and Docker Compose installed on your system
+- Python 3.11 (for local development if not using Docker)
+- GitHub account for CI/CD runs
 
 ## Environment Variables
-- `.env` file is not provided but the app reads from environment variables such as `FLASK_ENV`
+- The application uses API keys for AI services which should be provided as environment variables.
+- Create a `.env` file or set environment variables in your hosting platform or docker-compose environment.
+  - Example:
+    - OPENAI_API_KEY
+    - GOOGLE_API_KEY (if using Google Gemini via LangChain)
 
-## Local Development Setup
-1. Clone the repository
-2. Create and activate a Python 3.10 virtual environment
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Run the app locally:
-   ```bash
-   python app.py
-   ```
-   The app will be accessible at http://127.0.0.1:5000/
+## Setup and Running
 
-## Building and Running with Docker
+### Using Docker
 1. Build the Docker image:
-   ```bash
-   docker build -t content-writing-agent .
-   ```
+```
+docker build -t content-writing-agent .
+```
+
 2. Run the container:
-   ```bash
-   docker run -p 5000:5000 content-writing-agent
-   ```
-3. Or use Docker Compose:
-   ```bash
-   docker-compose up --build
-   ```
+```
+docker run -p 5000:5000 --env-file .env content-writing-agent
+```
 
-## Deployment Process
-1. Push your code to the `main` branch on GitHub
-2. The GitHub Actions CI/CD pipeline will build, test, and push the Docker image to Docker Hub
-3. Deploy the Docker image to your hosting provider (AWS, DigitalOcean, etc.)
+### Using Docker Compose
+1. Run the following command to start the service:
+```
+docker-compose up --build
+```
+This will start the app on port 5000.
 
-## Database Setup
-- No database used in the application currently
+### Local Development
+1. Install dependencies:
+```
+pip install -r requirements.txt
+```
+2. Run the Flask app directly:
+```
+python app.py
+```
+3. Access the app at http://localhost:5000
+
+## CI/CD Pipeline
+- The included GitHub Actions workflow installs dependencies, runs lint checks, imports the app module, and builds the Docker image.
+- This runs on pushes and pull requests to the `main` branch.
+
+## Database and External Services
+- This app does not use any external database or persistent service.
+- It relies on external AI APIs which require proper API keys.
 
 ## Troubleshooting
-- Make sure all dependencies are installed correctly
-- Verify Docker daemon is running
-- Check port 5000 is not used by another process
+- Ensure your environment variables for API keys are set correctly.
+- Check Docker logs for errors with:
+```
+docker logs <container_id>
+```
+- For development issues, run Flask app without Docker in debug mode.
 
-## Further Improvements
-- Add tests and enable running tests on CI
-- Add deployment steps in GitHub Actions
+## Useful Links
+- [Flask Documentation](https://flask.palletsprojects.com/)
+- [Docker Documentation](https://docs.docker.com/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
-## Documentation
-- Source code uses Flask backend with LangChain AI agents
-- The main app file is `app.py`
-- Frontend templates are in the `templates/` directory
-- Static assets like CSS and JS are in the `static/` directory
-
-
----
-
-For any further help, refer to README.md or open an issue on GitHub.
