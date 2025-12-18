@@ -1,22 +1,33 @@
-# Dockerfile for Content-writing-agent-main Python Flask app
+# Use official Python runtime as a parent image
+FROM python:3.10-slim
 
-FROM python:3.11-slim
-
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Work directory
+# Set working directory in the container
 WORKDIR /app
 
-# Install dependencies
+# Install system dependencies for pdfplumber and other packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpoppler-cpp-dev \
+    pkg-config \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements.txt first for better cache utilization
 COPY requirements.txt /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy app source code
-COPY . /app/
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 5000
+# Copy the rest of the application source code
+COPY . /app
+
+# Expose port 5000 for flask app
 EXPOSE 5000
 
-# Run using Gunicorn for production
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+# Use Gunicorn as production server
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
