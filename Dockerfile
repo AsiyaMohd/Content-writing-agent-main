@@ -1,30 +1,22 @@
-# Use official Python 3.10 slim image as base
-FROM python:3.10-slim
+# Dockerfile for Content-writing-agent-main Python Flask app
 
-# Set working directory
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Work directory
 WORKDIR /app
 
-# Install system dependencies (if any needed for pdfplumber or others)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpoppler-cpp-dev \
-    pkg-config \
-    && rm -rf /var/lib/apt/lists/*
+# Install dependencies
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy requirements first for layer caching
-COPY requirements.txt ./
+# Copy app source code
+COPY . /app/
 
-# Install python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application source code
-COPY . .
-
-# Expose Flask default port
+# Expose port 5000
 EXPOSE 5000
 
-# Set environment variable for production
-ENV FLASK_ENV=production
-
-# Use gunicorn to serve the app in production
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+# Run using Gunicorn for production
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
