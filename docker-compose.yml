@@ -1,16 +1,21 @@
 version: '3.8'
 
 services:
-  web:
+  app:
     build: .
     ports:
       - "5000:5000"
     environment:
+      - TAVILY_API_KEY
+      - OPENAI_API_KEY
       - FLASK_ENV=production
-      - TAVILY_API_KEY=${TAVILY_API_KEY}
     volumes:
       - .:/app
-    command: gunicorn -w 4 -b 0.0.0.0:5000 app:app
-
-# No external databases or services detected, so docker-compose is minimal.
-# Add services here if needed in the future.
+    command: gunicorn --bind 0.0.0.0:5000 app:app
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
