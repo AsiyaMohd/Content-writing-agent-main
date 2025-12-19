@@ -1,12 +1,12 @@
-version: "3.8"
+version: '3.8'
+
 services:
-  content-agent:
+  web:
     build: .
     ports:
       - "5000:5000"
     environment:
-      - OPENAI_API_KEY
-      - GOOGLE_API_KEY
+      - FLASK_ENV=production
     volumes:
       - .:/app
-    restart: unless-stopped
+    command: gunicorn --bind 0.0.0.0:5000 app:app
