@@ -1,12 +1,10 @@
-version: '3.8'
-
+version: '3.9'
 services:
-  web:
+  content-writing-agent:
     build: .
     ports:
-      - "5000:5000"
+      - '5000:5000'
     environment:
+      # Add environment variables here if any needed
       - FLASK_ENV=production
-    volumes:
-      - .:/app
-    command: gunicorn --bind 0.0.0.0:5000 app:app
+    restart: unless-stopped
