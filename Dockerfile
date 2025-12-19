@@ -1,32 +1,24 @@
-# Use official Python runtime as a base image
-FROM python:3.11-slim
+# Use official Python base image
+FROM python:3.10-slim
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies for pdfplumber (if needed)
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpoppler-cpp-dev \
-    pkg-config \
-    python3-dev \
- && rm -rf /var/lib/apt/lists/*
+# Install system dependencies
+RUN apt-get update \  
+    && apt-get install -y --no-install-recommends gcc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first to leverage caching
-COPY requirements.txt /app/
-
-# Install Python dependencies
+# Copy requirements and install
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application source code
+# Copy app source code
 COPY . /app
 
-# Expose port 5000 for Flask app
+# Expose Flask default port
 EXPOSE 5000
 
-# Environment variables required for AI API keys
-ENV OPENAI_API_KEY=""
-ENV GOOGLE_API_KEY=""
-
-# Start the Flask application
+# Run the Flask app
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
