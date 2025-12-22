@@ -1,67 +1,93 @@
-# Implementation Guide for Content-writing-agent-main
+# Implementation Guide for Content Writing Agent
+
+## Overview
+This repository contains a Python Flask web application that uses AI technologies to generate content based on user inputs and file uploads.
 
 ## Prerequisites
-- Docker 20.10+
-- Docker Compose 1.29+
-- Python 3.10 (for local development without Docker)
-- GitHub account (for CI/CD)
+- Docker and docker-compose installed on your machine
+- Python 3.11 (only if running locally without Docker)
+- GitHub account to use CI/CD GitHub Actions
+- OpenAI API key or other required API keys for Langchain and LangGraph
 
 ## Environment Variables
-- No explicit .env is used but you may create one for customization
+Create a `.env` file or set environment variables:
+- `OPENAI_API_KEY`: Your OpenAI API key for accessing AI models
+- `TAVILY_API_KEY`: API key for web scraping tool (used in tools/search_tool.py)
+- Any other keys required by Langchain or LangGraph agents
 
 ## Local Development Setup
-1. Clone the repo:
-   ```sh
-   git clone https://github.com/AsiyaMohd/Content-writing-agent-main.git
-   cd Content-writing-agent-main
-   ```
-2. Create and activate a virtual environment:
-   ```sh
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-3. Install dependencies:
-   ```sh
-   pip install -r requirements.txt
-   ```
-4. Run the Flask app:
-   ```sh
-   python app.py
-   ```
-5. Access the app at `http://localhost:5000`
+1. Clone the repository
 
-## Docker Setup
-
-### Build and Run Docker Container
-```sh
-docker build -t content-writing-agent .
-docker run -p 5000:5000 content-writing-agent
+```bash
+git clone https://github.com/AsiyaMohd/Content-writing-agent-main.git
+cd Content-writing-agent-main
 ```
 
-### Using Docker Compose
-```sh
+2. Create and activate a virtual environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Set environment variables
+
+```bash
+export OPENAI_API_KEY="your_openai_api_key"
+export TAVILY_API_KEY="your_tavily_api_key"
+```
+
+5. Run the Flask app
+
+```bash
+python app.py
+```
+
+6. Access app at `http://localhost:5000`
+
+## Using Docker
+
+Build and run the app with Docker:
+
+```bash
+docker build -t content-writing-agent-main .
+docker run -p 5000:5000 --env-file .env content-writing-agent-main
+```
+
+Or use docker-compose:
+
+```bash
 docker-compose up --build
 ```
 
-## GitHub Actions CI/CD
-- The workflow installs dependencies, runs lint, and builds Docker image on push/PR to main branch.
-- Deployment steps are placeholder; customize based on deployment target.
-
-## Application Details
-- Flask-based web app serving frontend from `templates/` and static assets.
-- Main logic in `app.py` invoking LangGraph agent for content generation.
-- Supports PDF, TXT, DOCX file upload and parsing.
+## CI/CD Pipeline
+- On each push or pull request to `main` branch, GitHub Actions will:
+  - Checkout code
+  - Setup Python
+  - Install dependencies
+  - Lint code with flake8
+  - Run tests (currently placeholder)
+  - Build Docker image
+  - Deploy step placeholder for future deployment integration
 
 ## Troubleshooting
-- Ensure all dependencies installed.
-- Use `docker logs <container>` for Docker container logs.
-- Adjust port if 5000 is occupied.
+- Ensure API keys are set properly
+- Check Docker service status if using Docker
+- Logs can be viewed from Flask app console or GitHub Actions logs
 
-## Further Enhancements
-- Add proper environment variable configuration.
-- Add unit/integration tests.
-- Add real deployment steps in CI/CD workflow.
+## Notes
+- No database service setup is needed
+- The application is stateless and depends on API integrations
 
----
-
-For further details, refer to the [README.md](README.md) file in the repo.
+## References
+- Flask documentation: https://flask.palletsprojects.com/
+- Langchain: https://python.langchain.com/
+- OpenAI API: https://platform.openai.com/docs/api-reference
+- Docker: https://docs.docker.com/
+- GitHub Actions: https://docs.github.com/en/actions
