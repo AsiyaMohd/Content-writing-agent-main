@@ -1,29 +1,25 @@
-# Use official Python runtime as a parent image
+# Use official Python image as base
 FROM python:3.11-slim
-
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
 
 # Set working directory
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements to cache dependencies layer
-COPY requirements.txt /app/
+# Copy requirements first for caching
+COPY requirements.txt .
 
-# Install Python dependencies
+# Install python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the source code
-COPY . /app/
+# Copy app source code
+COPY . .
 
-# Expose port 5000
+# Expose the port the app runs on
 EXPOSE 5000
 
-# Use gunicorn as production server
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+# Run app with Gunicorn
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
