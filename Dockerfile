@@ -1,27 +1,23 @@
-# Use official Python runtime base image
+# Use official Python runtime as a parent image
 FROM python:3.10-slim
 
-# Set working directory inside the container
+# Set working directory in the container
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements.txt and install dependencies
+# Copy dependency files first for better caching
 COPY requirements.txt ./
+
+# Install python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project into the container
-COPY . .
+# Copy the rest of the application code
+COPY . ./
 
-# Expose Flask default port
+# Expose port 5000 (Flask default)
 EXPOSE 5000
 
-# Set environment variables
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-
-# Run Gunicorn as the production server
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+# Use gunicorn as WSGI server
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
