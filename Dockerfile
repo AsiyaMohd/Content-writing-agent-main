@@ -1,28 +1,26 @@
-# Use official Python runtime base image
-FROM python:3.11-slim
+# Use official Python runtime as a parent image
+FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Install system dependencies for pdfplumber (poppler-utils) and others
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    poppler-utils \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Copy only requirements first for better caching
 COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application source code
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . /app
 
-# Expose port 5000 (Flask default)
+# Expose Flask default port
 EXPOSE 5000
 
-# Use Gunicorn for production
+# Run the application using gunicorn to serve app.py
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
