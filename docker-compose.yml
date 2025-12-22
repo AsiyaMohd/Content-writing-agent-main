@@ -1,10 +1,14 @@
 version: '3.8'
 
 services:
-  app:
+  web:
     build: .
+    container_name: content-writing-agent
     ports:
       - "5000:5000"
     environment:
       - FLASK_ENV=production
-    restart: always
+      # Add your API keys or other env vars here, e.g., OPENAI_API_KEY
+    volumes:
+      - .:/app
+    command: gunicorn --bind 0.0.0.0:5000 app:app
