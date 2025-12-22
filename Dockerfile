@@ -1,23 +1,27 @@
-# Use official Python runtime as a parent image
+# Use official Python slim image as a parent image
 FROM python:3.10-slim
 
-# Set working directory in the container
+# Set the working directory
 WORKDIR /app
 
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
 # Install system dependencies
-RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy dependency files first for better caching
-COPY requirements.txt ./
+# Install pip requirements
+COPY requirements.txt /app/
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-# Install python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the application source code
+COPY . /app/
 
-# Copy the rest of the application code
-COPY . ./
-
-# Expose port 5000 (Flask default)
+# Expose the default Flask port
 EXPOSE 5000
 
-# Use gunicorn as WSGI server
+# Run the application
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
